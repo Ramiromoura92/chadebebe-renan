@@ -35,19 +35,25 @@ body {
 st.markdown(page_bg_img, unsafe_allow_html=True)
 
 # Título estilizado
-st.markdown(
-    '''
-    <h1 style="
+st.markdown("""
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet">
+
+    <div style="
+        font-family: 'Dancing Script', cursive;
         color: white;
         text-align: center;
-        font-weight: bold;
+        padding: 1em;
         text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
     ">
-        Chá de Bebê do Renan
-    </h1>
-    ''',
-    unsafe_allow_html=True
-) 
+        <h1 style="font-size: 3em; margin-bottom: 0.5em;">Chá de Bebê do Renan</h1>
+        <h2 style="font-size: 1.5em; line-height: 1.6;">
+            "Era este menino que eu pedia, e o Senhor concedeu-me o pedido."<br>
+            "Por isso, agora, eu o dedico ao Senhor. Por toda a sua vida será dedicado ao Senhor."<br>
+            — 1 Samuel 1:27-28
+        </h2>
+    </div>
+""", unsafe_allow_html=True)
+
 
 
 

@@ -2,6 +2,31 @@ import sqlite3
 import streamlit as st
 import pandas as pd
 
+# Usuários autorizados
+USUARIOS = {
+    "RamiroSilva": "Ramo@10110",
+    "RaianeLima": "Raiane@10110"
+}
+
+# Função de login
+def login():
+    st.title("Faça o login")
+    usuario = st.text_input("Usuário")
+    senha = st.text_input("Senha", type="password")
+    if st.button("Entrar"):
+        if usuario in USUARIOS and USUARIOS[usuario] == senha:
+            st.session_state['logado'] = True
+            st.session_state['usuario'] = usuario
+            st.success(f"Bem-vindo, {usuario}!")
+        else:
+            st.error("Usuário ou senha incorretos")
+
+# Verifica se o usuário está logado
+if 'logado' not in st.session_state or not st.session_state['logado']:
+    login()
+    st.stop()  # Interrompe o restante da execução se não estiver logado
+
+
 # Função para buscar os dados do banco
 def get_all_pessoas():
     conn = sqlite3.connect('chadebebe.db')
