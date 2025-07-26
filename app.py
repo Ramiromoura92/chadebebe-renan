@@ -1,5 +1,5 @@
 import streamlit as st
-from pages import form
+import pages
 
 
 pages = {
@@ -15,6 +15,9 @@ pages = {
 
     "Lista de itens": [
         st.Page("pages/lista_de_itens.py", title='Lista de itens')
+    ],
+    "Adicionar item novo": [
+        st.Page("pages/form_add_item.py", title='Adiconar item novo')
     ]
 }
 

@@ -2,6 +2,10 @@ import sqlite3
 import streamlit as st
 import pandas as pd
 
+right = st.columns(3)[0]
+if right.button("Adicionar um novo item", icon=":material/mood:", use_container_width=True):
+    st.switch_page("pages/form_add_item.py")
+
 # Função para buscar os dados do banco
 def get_all_itens():
     conn = sqlite3.connect('chadebebe.db')
@@ -10,7 +14,7 @@ def get_all_itens():
     dados = cursor.fetchall()
     conn.close()
 
-    # Transformar em DataFrame para exibir como tabela
+    # Transformar em DataFrame para exibir como tabela  
     df = pd.DataFrame(dados, columns=["descricao"])
     return df
 

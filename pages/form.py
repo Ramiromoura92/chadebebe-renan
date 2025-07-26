@@ -1,5 +1,5 @@
 import streamlit as st
-from models import PessoaDB, Itens
+from models import PessoaDB, Itens, Acompanhante
 
 
 # CSS de fundo com responsividade
@@ -47,16 +47,23 @@ st.markdown(
     </h1>
     ''',
     unsafe_allow_html=True
-)
+) 
+
 
 
 # Formulário
-with st.form('form_renan'):
-    st.write('<p style="color:white;">Por favor, confirme sua presença!</p>', unsafe_allow_html=True)
+with st.form('formulario_confirmacao'):
+    st.markdown('<p style="color:white;">Por favor, confirme sua presença!</p>', unsafe_allow_html=True)
 
     name = st.text_input('Nome:')
     check = st.radio("Podemos contar com a sua presença?", ["Sim", "Não"])
-
+    check_2 = st.radio("Acompanhante?", ["Sim", "Não"], index=0)
+    
+    if check_2 == "Sim":
+        company = st.text_input("Nome do(s) acompanhante(s): ")
+    else:
+        company = None
+     
     lista_opcoes = Itens.get_lista_itens()
 
     if lista_opcoes:
@@ -70,14 +77,17 @@ with st.form('form_renan'):
     #Validação dos dados enviados
     if submitted:
         if name.strip() == "":
-
             print("Por gentileza, preencha o nome.")
-        else:
+            
+        elif check_2 == "Sim" and (not company or company.strip() == ""):
+            st.warning("Por favor, informe o(s) nome(s) do(s) acompanhante(s).")
 
+        else:
             check_bool = check == "Sim" #Convertendo SIm/Não em boleando
             pessoa = PessoaDB(name,check,choice)
-            pessoa.insert_data()
-            
+            pessoa_id = pessoa.insert_data()
+            companhia = Acompanhante(company,pessoa_id)
+            companhia.insert_data()
             if choice:
                 Itens.remover_item_escolhido(choice)
                 
@@ -111,5 +121,3 @@ css = """
 st.markdown(css, unsafe_allow_html=True)
 
 # Resultado após envio
-if submitted:
-    st.success("Obrigado pela confirmação!")

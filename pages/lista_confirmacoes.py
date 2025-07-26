@@ -6,12 +6,25 @@ import pandas as pd
 def get_all_pessoas():
     conn = sqlite3.connect('chadebebe.db')
     cursor = conn.cursor()
-    cursor.execute("SELECT nome, check_value, choice FROM pessoas")
+    cursor.execute("""
+                    SELECT 
+                        p.id AS pessoa_id,
+                        p.nome AS nome_pessoa,
+                        p.check_value,
+                        p.choice,
+                        c.nome AS nome_companhia
+                    FROM 
+                        pessoas p
+                    LEFT JOIN 
+                        companhia c ON c.pessoa_id = p.id;
+
+                    """)
     dados = cursor.fetchall()
+    #import ipdb; ipdb.set_trace()
     conn.close()
 
     # Transformar em DataFrame para exibir como tabela
-    df = pd.DataFrame(dados, columns=["Nome", "Presença", "Item"])
+    df = pd.DataFrame(dados, columns=["Id","Nome", "Presença", "Item", "Acompanhante(s)"])
 
     # Converte valor booleano de volta para texto
     df["Presença"] = df["Presença"].apply(lambda x: "Sim" if x == 1 else "Não")

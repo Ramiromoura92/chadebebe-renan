@@ -1,6 +1,5 @@
 images
 __pycache__
 venv
-**.db
 **.txt
 **.xlsx
