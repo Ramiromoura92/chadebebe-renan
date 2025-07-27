@@ -3,31 +3,32 @@ import streamlit as st
 import pandas as pd
 
 # Usuários autorizados
-USUARIOS = {
-    "RamiroSilva": "Ramo@10110",
-    "RaianeLima": "Raiane@10110"
-}
+def get_usuarios():
+    # Tenta pegar do st.secrets, se não existir, usa dicionário default
+    try:
+        usuarios = dict(st.secrets["usuarios"])
+    except Exception:
+        usuarios = {
+            "RamiroSilva": "Ramo@10110",
+            "RaianeLima": "Raiane@10110"
+        }
+    return usuarios
 
-# Função de login
 def login():
     st.title("Faça o login")
     usuario = st.text_input("Usuário")
     senha = st.text_input("Senha", type="password")
     if st.button("Entrar"):
-        if usuario in USUARIOS and USUARIOS[usuario] == senha:
+        usuarios = get_usuarios()
+        if usuario in usuarios and usuarios[usuario] == senha:
             st.session_state['logado'] = True
             st.session_state['usuario'] = usuario
             st.success(f"Bem-vindo, {usuario}!")
         else:
             st.error("Usuário ou senha incorretos")
 
-# Verifica se o usuário está logado
-if 'logado' not in st.session_state or not st.session_state['logado']:
-    login()
-    st.stop()  # Interrompe o restante da execução se não estiver logado
-
-SUPABASE_URL = "https://afcvlygdllpqbkehqjmf.supabase.co"
-SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFmY3ZseWdkbGxwcWJrZWhxam1mIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1MzU2MTQwMiwiZXhwIjoyMDY5MTM3NDAyfQ.taSe9z5L7cxGsqv1dlgE4SZqZG3BmBuCatjVb9DcRAY"
+SUPABASE_URL = st.secrets["SUPABASE_URL"]
+SUPABASE_KEY = st.secrets["SUPABASE_KEY"]
 supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
 
 # Função para buscar os dados do banco
