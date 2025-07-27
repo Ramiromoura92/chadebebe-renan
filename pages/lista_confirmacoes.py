@@ -4,15 +4,7 @@ import pandas as pd
 
 # Usuários autorizados
 def get_usuarios():
-    # Tenta pegar do st.secrets, se não existir, usa dicionário default
-    try:
-        usuarios = dict(st.secrets["usuarios"])
-    except Exception:
-        usuarios = {
-            "RamiroSilva": "Ramo@10110",
-            "RaianeLima": "Raiane@10110"
-        }
-    return usuarios
+    return dict(st.secrets["usuarios"])
 
 def login():
     st.title("Faça o login")
