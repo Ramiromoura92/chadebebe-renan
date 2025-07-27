@@ -1,6 +1,10 @@
-import sqlite3
+from supabase import create_client
 import streamlit as st
 import pandas as pd
+
+SUPABASE_URL = "https://afcvlygdllpqbkehqjmf.supabase.co"
+SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFmY3ZseWdkbGxwcWJrZWhxam1mIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1MzU2MTQwMiwiZXhwIjoyMDY5MTM3NDAyfQ.taSe9z5L7cxGsqv1dlgE4SZqZG3BmBuCatjVb9DcRAY"
+supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
 
 right = st.columns(3)[0]
 if right.button("Adicionar um novo item", icon=":material/mood:", use_container_width=True):
@@ -8,15 +12,19 @@ if right.button("Adicionar um novo item", icon=":material/mood:", use_container_
 
 # Função para buscar os dados do banco
 def get_all_itens():
-    conn = sqlite3.connect('chadebebe.db')
-    cursor = conn.cursor()
-    cursor.execute("SELECT descricao FROM lista_itens")
-    dados = cursor.fetchall()
-    conn.close()
+    try:
+        response = supabase.table("lista_itens").select("descricao").execute()
+        dados = response.data
 
-    # Transformar em DataFrame para exibir como tabela  
-    df = pd.DataFrame(dados, columns=["descricao"])
-    return df
+        if not dados:
+            return pd.DataFrame(columns=["descricao"])
+        
+        df = pd.DataFrame(dados)  # Supabase já retorna lista de dicionários
+        return df
+
+    except Exception as e:
+        st.error(f"Erro ao buscar itens: {e}")
+        return pd.DataFrame(columns=["descricao"])
 
 page_bg_img = """
 <style>

@@ -44,6 +44,6 @@ with st.form('dois'):
         if descricao.strip() == "":
             st.warning("Favor adicionar algum item.")
         else:
-            item = Itens(descricao)
-            item.adicionar_item()
+            item = Itens()
+            item.adicionar_item(descricao)
             st.success(f"Item '{descricao}' adicionado com sucesso!")

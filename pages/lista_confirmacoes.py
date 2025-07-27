@@ -1,4 +1,4 @@
-import sqlite3
+from supabase import create_client
 import streamlit as st
 import pandas as pd
 
@@ -26,33 +26,39 @@ if 'logado' not in st.session_state or not st.session_state['logado']:
     login()
     st.stop()  # Interrompe o restante da execução se não estiver logado
 
+SUPABASE_URL = "https://afcvlygdllpqbkehqjmf.supabase.co"
+SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFmY3ZseWdkbGxwcWJrZWhxam1mIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1MzU2MTQwMiwiZXhwIjoyMDY5MTM3NDAyfQ.taSe9z5L7cxGsqv1dlgE4SZqZG3BmBuCatjVb9DcRAY"
+supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
 
 # Função para buscar os dados do banco
 def get_all_pessoas():
-    conn = sqlite3.connect('chadebebe.db')
-    cursor = conn.cursor()
-    cursor.execute("""
-                    SELECT 
-                        p.id AS pessoa_id,
-                        p.nome AS nome_pessoa,
-                        p.check_value,
-                        p.choice,
-                        c.nome AS nome_companhia
-                    FROM 
-                        pessoas p
-                    LEFT JOIN 
-                        companhia c ON c.pessoa_id = p.id;
 
-                    """)
-    dados = cursor.fetchall()
-    #import ipdb; ipdb.set_trace()
-    conn.close()
+    response_pessoas = supabase.table("pessoas").select("*").execute()
+    pessoas = response_pessoas.data
 
-    # Transformar em DataFrame para exibir como tabela
-    df = pd.DataFrame(dados, columns=["Id","Nome", "Presença", "Item", "Acompanhante(s)"])
+    response_companhia = supabase.table("companhia").select("nome, pessoa_id").execute()
+    companhias = response_companhia.data
 
-    # Converte valor booleano de volta para texto
-    df["Presença"] = df["Presença"].apply(lambda x: "Sim" if x == 1 else "Não")
+     # Junta os dados manualmente (simulando LEFT JOIN)
+    dados = []
+    for p in pessoas:
+        pessoa_id = p["id"]
+        nome_pessoa = p["nome"]
+        check_value = p["check_value"]
+        choice = p["choice"]
+
+        # Filtra acompanhantes da pessoa
+        acompanhante = ", ".join([c["nome"] for c in companhias if c["pessoa_id"] == pessoa_id]) or None
+
+        dados.append({
+            "Id": pessoa_id,
+            "Nome": nome_pessoa,
+            "Presença": "Sim" if check_value else "Não",
+            "Item": choice,
+            "Acompanhante(s)": acompanhante
+        })
+
+    df = pd.DataFrame(dados)
     return df
 
 

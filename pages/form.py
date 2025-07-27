@@ -58,6 +58,7 @@ st.markdown("""
 
 
 # Formulário
+# Formulário
 with st.form('formulario_confirmacao'):
     st.markdown('<p style="color:white;">Por favor, confirme sua presença!</p>', unsafe_allow_html=True)
 
@@ -69,37 +70,41 @@ with st.form('formulario_confirmacao'):
         company = st.text_input("Nome do(s) acompanhante(s): ")
     else:
         company = None
-     
-    lista_opcoes = Itens.get_lista_itens()
+    
+    itens = Itens()
+    lista_opcoes = itens.get_lista_itens()
 
     if lista_opcoes:
-        choice = st.selectbox("O que pode levar?",lista_opcoes)
+        choice = st.selectbox("O que pode levar?", lista_opcoes)
     else:
         st.warning("Nenhum item disponível para seleção.")
         choice = ""
     
     submitted = st.form_submit_button("Enviar")
     
-    #Validação dos dados enviados
     if submitted:
         if name.strip() == "":
-            print("Por gentileza, preencha o nome.")
+            st.warning("Por gentileza, preencha o nome.")
             
         elif check_2 == "Sim" and (not company or company.strip() == ""):
             st.warning("Por favor, informe o(s) nome(s) do(s) acompanhante(s).")
 
         else:
-            check_bool = check == "Sim" #Convertendo SIm/Não em boleando
-            pessoa = PessoaDB(name,check,choice)
+            check_bool = check == "Sim"
+            pessoa = PessoaDB(name, check, choice)
             pessoa_id = pessoa.insert_data()
-            companhia = Acompanhante(company,pessoa_id)
-            companhia.insert_data()
-            if choice:
-                Itens.remover_item_escolhido(choice)
-                
 
-                
-            st.success("Dados enviados com sucesso! Obrigado, Renan agradeçe!")
+            # Apenas insere acompanhante se for necessário
+            if check_2 == "Sim" and company:
+                companhia = Acompanhante(company, pessoa_id)
+                companhia.insert_data()
+
+            if choice:
+                item = Itens()
+                item.remover_item_escolhido(choice)
+
+            st.success("Dados enviados com sucesso! Obrigado, Renan agradece!")
+
 
 
 # CSS para o formulário
