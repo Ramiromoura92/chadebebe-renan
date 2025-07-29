@@ -5,3 +5,4 @@ import_dados.txt
 **.xlsx
 input_db.py
 import_dados.py
+secrets.toml

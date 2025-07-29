@@ -90,7 +90,7 @@ st.markdown(page_bg_img, unsafe_allow_html=True)
 st.markdown(
     '''
     <h1 style="
-        color: white;
+        color: #A67B5B;
         text-align: center;
         font-weight: bold;
         text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
@@ -99,7 +99,7 @@ st.markdown(
         
     </h1>
     <h2 style="
-        color: white;
+        color: #A67B5B;
         text-align: center;
         font-weight: bold;
         text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);

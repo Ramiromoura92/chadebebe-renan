@@ -6,6 +6,7 @@ from models import Itens
 
 # Usuários autorizados
 USUARIOS = {
+    "admin":"admin",
     "RamiroSilva": "Ramo@10110",
     "RaianeLima": "Raiane@10110"
 }
@@ -34,7 +35,7 @@ if right.button("Voltar para lista", icon=":material/mood:", use_container_width
     st.switch_page("pages/lista_de_itens.py")
 
 with st.form('dois'):
-    st.write('<p style="color:white;">Adicionar item</p>', unsafe_allow_html=True)
+    st.write('<p style="color:#A67B5B;">Adicionar item</p>', unsafe_allow_html=True)
 
     descricao = st.text_input('Adicionar item:')
 

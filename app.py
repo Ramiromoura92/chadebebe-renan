@@ -1,26 +1,15 @@
 import streamlit as st
-import pages
-
 
 pages = {
-
-    
-    "Formulário": [
-        st.Page("pages/form.py", title='Preenha o formulário'),
-    ],
-
-    "Lista de confirmados": [
-        st.Page("pages/lista_confirmacoes.py", title='Lista dos confirmados')
-    ],
-
-    "Lista de itens": [
-        st.Page("pages/lista_de_itens.py", title='Lista de itens')
-    ],
-    "Adicionar item novo": [
-        st.Page("pages/form_add_item.py", title='Adiconar item novo')
+    "Menu Principal": [  # seção
+        st.Page("pages/form.py", title="Formulário"),
+        st.Page("pages/lista_confirmacoes.py", title="Lista de Confirmados"),
+        st.Page("pages/lista_de_itens.py", title="Lista de Itens"),
+        st.Page("pages/form_add_item.py", title="Adicionar Item"),
     ]
 }
 
-pg = st.navigation(pages, position='top')
+pg = st.navigation(pages)
 pg.run()
+
 

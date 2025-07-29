@@ -1,46 +1,74 @@
 import streamlit as st
 from models import PessoaDB, Itens, Acompanhante
 
-
-# CSS de fundo com responsividade
-page_bg_img = """
+# CSS completo
+custom_css = """
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap');
+
 body {
-    margin: 0;
-    padding: 0;
-    min-height: 100vh;
+    background-image: url("https://i.imgur.com/ZKrI7oa.jpeg");
     background-size: cover;
-    background-position: center;
     background-repeat: no-repeat;
-    background-attachment: scroll; /* Melhor para mobile */
+    background-attachment: fixed;
 }
 
-/* Transparência do app principal */
 .stApp {
-    background-color: rgba(0,0,0,0);
+    background-color: rgba(255, 255, 255, 0.92);
+    color: #5C4033;
+    font-family: 'Segoe UI', sans-serif;
 }
 
-/* Ajustes para dispositivos móveis */
-@media only screen and (max-width: 768px) {
-    body {
-        background-attachment: scroll;
-        background-position: center center;
-        background-size: cover;
-    }
+h1, h2, h3, h4, h5, h6, label, .stRadio > label, .stTextInput > label {
+    color: #5C4033;
 }
-</style>
+
+input, textarea, select {
+    background-color: #FFF9F3 !important;
+    color: #5C4033 !important;
+    border-radius: 8px !important;
+    font-size: 1rem !important;
+}
+
+/* Botões */
+.stButton > button {
+    background-color: #A67B5B;
+    color: white;
+    border: none;
+    padding: 0.5rem 1.2rem;
+    border-radius: 8px;
+    font-weight: bold;
+}
+
+.stButton > button:hover {
+    background-color: #8B5E3C;
+}
+
+/* Selectbox dropdown corrigido */
+.stSelectbox > div > div {
+    background-color: #FFF9F3 !important;
+    color: #5C4033 !important;
+}
+
+/* Form container */
+.form-container {
+    background-color: rgba(255, 255, 255, 0.85);
+    padding: 2rem;
+    border-radius: 15px;
+    max-width: 600px;
+    margin: 2rem auto;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
 """
 
-# Aplica o estilo de fundo
-st.markdown(page_bg_img, unsafe_allow_html=True)
+# Aplica o CSS
+st.markdown(custom_css, unsafe_allow_html=True)
 
-# Título estilizado
+# Título estilizado com versículo
 st.markdown("""
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet">
-
     <div style="
         font-family: 'Dancing Script', cursive;
-        color: white;
+        color: #A67B5B;
         text-align: center;
         padding: 1em;
         text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
@@ -54,23 +82,25 @@ st.markdown("""
     </div>
 """, unsafe_allow_html=True)
 
+# Título
+st.markdown('<p style="color:#A67B5B; text-align:center; font-size:24px;">Por favor, confirme sua presença!</p>', unsafe_allow_html=True)
 
+# Entrada de dados
+name = st.text_input('Nome:')
+check = st.radio("Podemos contar com a sua presença?", ["Sim", "Não"])
 
+# Inicialização
+company = None
+choice = ""
+check_2 = "Não"
 
-# Formulário
-# Formulário
-with st.form('formulario_confirmacao'):
-    st.markdown('<p style="color:white;">Por favor, confirme sua presença!</p>', unsafe_allow_html=True)
-
-    name = st.text_input('Nome:')
-    check = st.radio("Podemos contar com a sua presença?", ["Sim", "Não"])
+# Se confirmou presença
+if check == "Sim":
     check_2 = st.radio("Acompanhante?", ["Sim", "Não"], index=0)
-    
+
     if check_2 == "Sim":
-        company = st.text_input("Nome do(s) acompanhante(s): ")
-    else:
-        company = None
-    
+        company = st.text_input("Nome do(s) acompanhante(s):")
+
     itens = Itens()
     lista_opcoes = itens.get_lista_itens()
 
@@ -79,56 +109,40 @@ with st.form('formulario_confirmacao'):
     else:
         st.warning("Nenhum item disponível para seleção.")
         choice = ""
-    
-    submitted = st.form_submit_button("Enviar")
-    
-    if submitted:
-        if name.strip() == "":
-            st.warning("Por gentileza, preencha o nome.")
-            
-        elif check_2 == "Sim" and (not company or company.strip() == ""):
-            st.warning("Por favor, informe o(s) nome(s) do(s) acompanhante(s).")
 
-        else:
-            check_bool = check == "Sim"
-            pessoa = PessoaDB(name, check, choice)
-            pessoa_id = pessoa.insert_data()
+    # Formulário com container estilizado
+    with st.form("formulario_confirmacao"):
+        submitted = st.form_submit_button("Enviar")
 
-            # Apenas insere acompanhante se for necessário
-            if check_2 == "Sim" and company:
-                companhia = Acompanhante(company, pessoa_id)
-                companhia.insert_data()
+        if submitted:
+            if name.strip() == "":
+                st.warning("Por gentileza, preencha o nome.")
+            elif check_2 == "Sim" and (not company or company.strip() == ""):
+                st.warning("Por favor, informe o(s) nome(s) do(s) acompanhante(s).")
+            else:
+                pessoa = PessoaDB(name, 1, choice)
+                pessoa_id = pessoa.insert_data()
 
-            if choice:
-                item = Itens()
-                item.remover_item_escolhido(choice)
+                if check_2 == "Sim" and company:
+                    companhia = Acompanhante(company, pessoa_id)
+                    companhia.insert_data()
 
-            st.success("Dados enviados com sucesso! Obrigado, Renan agradece!")
+                if choice:
+                    item = Itens()
+                    item.remover_item_escolhido(choice)
 
+                st.success("Dados enviados com sucesso! Obrigado, Renan agradece!")
 
+# Se não confirmou presença
+else:
+    print(check)
+    with st.form("formulario_confirmacao"):
+        submitted = st.form_submit_button("Enviar")
 
-# CSS para o formulário
-css = """
-<style>
-    [data-testid="stForm"] {
-        background-color: rgba(0, 0, 0, 0.5);
-        padding: 1.5rem;
-        border-radius: 12px;
-        color: white;
-    }
-
-    /* Ajusta cor do texto dos inputs */
-    label, .stTextInput label, .stNumberInput label, .stRadio label {
-        color: white !important;
-    }
-
-    /* Ajusta inputs para fundo escuro */
-    input, textarea {
-        background-color: #ffffffdd !important;
-        color: black !important;
-    }
-</style>
-"""
-st.markdown(css, unsafe_allow_html=True)
-
-# Resultado após envio
+        if submitted:
+            if name.strip() == "":
+                st.warning("Por gentileza, preencha o nome.")
+            else:
+                pessoa = PessoaDB(name, 0, choice)
+                pessoa.insert_data()
+                st.success("Sua resposta foi registrada. Obrigado!")
