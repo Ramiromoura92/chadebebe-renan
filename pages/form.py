@@ -105,7 +105,7 @@ if check == "Sim":
     lista_opcoes = itens.get_lista_itens()
 
     if lista_opcoes:
-        choice = st.selectbox("Escolha um mimo para o renan:", lista_opcoes)
+        choice = st.selectbox("Escolha um mimo para o Renan:", lista_opcoes)
     else:
         st.warning("Nenhum item disponível para seleção.")
         choice = ""
