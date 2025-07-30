@@ -1,27 +1,13 @@
 from supabase import create_client
 import streamlit as st
 import pandas as pd
-
-# Usuários autorizados
-def get_usuarios():
-    return dict(st.secrets["usuarios"])
-
-def login():
-    st.title("Faça o login")
-    usuario = st.text_input("Usuário")
-    senha = st.text_input("Senha", type="password")
-    if st.button("Entrar"):
-        usuarios = get_usuarios()
-        if usuario in usuarios and usuarios[usuario] == senha:
-            st.session_state['logado'] = True
-            st.session_state['usuario'] = usuario
-            st.success(f"Bem-vindo, {usuario}!")
-        else:
-            st.error("Usuário ou senha incorretos")
+from auth import verify_login
 
 SUPABASE_URL = st.secrets["SUPABASE_URL"]
 SUPABASE_KEY = st.secrets["SUPABASE_KEY"]
 supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
+
+verify_login()
 
 # Função para buscar os dados do banco
 def get_all_pessoas():
@@ -111,7 +97,6 @@ st.markdown(
     ''',
     unsafe_allow_html=True
 )
-# Interface Streamlit
 
 df_pessoas = get_all_pessoas()
 
