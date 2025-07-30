@@ -84,7 +84,6 @@ st.markdown("""
             Data: 13 de setembro ás 12:00 <br>
             Local: Espaço Casa Amarela 
                    Rua Gramado,653-Campo Grande, RJ 
-
         </h3>
 
             
