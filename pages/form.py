@@ -81,7 +81,7 @@ st.markdown("""
         </h2>
         <h3>
             Venha comemorar conosco nesse dia tão especial! <br>
-            Data: 13 de setembro ás 12:00 <br>
+            Data: 13 de setembro às 12:00 <br>
             Local: Espaço Casa Amarela 
                    Rua Gramado,653-Campo Grande, RJ 
         </h3>
