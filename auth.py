@@ -16,7 +16,6 @@ def login():
         else:
             st.error("Usuário ou senha incorretos")
 
-
 def verify_login():
     if 'logado' not in st.session_state or not st.session_state['logado']:
         login()
