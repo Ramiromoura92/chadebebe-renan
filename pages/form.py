@@ -79,6 +79,15 @@ st.markdown("""
             "Por isso, agora, eu o dedico ao Senhor. Por toda a sua vida será dedicado ao Senhor."<br>
             — 1 Samuel 1:27-28
         </h2>
+        <h3>
+            Venha comemorar conosco nesse dia tão especial! <br>
+            Data: 13 de setembro ás 12:00 <br>
+            Local: Espaço Casa Amarela 
+                   Rua Gramado,653-Campo Grande, RJ 
+
+        </h3>
+
+            
     </div>
 """, unsafe_allow_html=True)
 

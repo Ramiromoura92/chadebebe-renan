@@ -66,7 +66,7 @@ st.markdown(
         font-weight: bold;
         text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
     ">
-        Lista de itens 
+        Lista de mimos 
         
     </h1>
     ''',
