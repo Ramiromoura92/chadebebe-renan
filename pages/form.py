@@ -130,7 +130,7 @@ if check == "Sim":
             elif check_2 == "Sim" and (not company or company.strip() == ""):
                 st.warning("Por favor, informe o(s) nome(s) do(s) acompanhante(s).")
             else:
-                pessoa = PessoaDB(name, 1, choice)
+                pessoa = PessoaDB(name, 1, choice[1])
                 pessoa_id = pessoa.insert_data()
 
                 if check_2 == "Sim" and company:
