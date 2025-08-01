@@ -45,15 +45,16 @@ class Itens:
     def get_lista_itens(self):
         try:
             response = self.supabase.table("lista_itens").select("*").execute()
-            return [item["descricao"] for item in response.data]
+            #import ipdb; ipdb.set_trace()
+            return [(item["id"],item["descricao"]) for item in response.data]
         except Exception as e:
             print("Erro ao buscar itens:", e)
             return []
 
-    def remover_item_escolhido(self, descricao):
+    def remover_item_escolhido(self, item):
         try:
-            response = self.supabase.table("lista_itens").delete().eq("descricao", descricao).execute()
-            print("Item removido:", descricao)
+            response = self.supabase.table("lista_itens").delete().eq("id", item[0]).execute()
+            print("Item removido:", item[1])
             return True
         except Exception as e:
             print("Erro ao remover item:", e)
