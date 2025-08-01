@@ -1,6 +1,8 @@
 import streamlit as st
 from models import PessoaDB, Itens, Acompanhante
 
+
+
 # CSS completo
 custom_css = """
 <style>
@@ -139,7 +141,10 @@ if check == "Sim":
                     item = Itens()
                     item.remover_item_escolhido(choice)
 
-                st.success("Dados enviados com sucesso! Obrigado, Renan agradece!")
+                st.success(f"🎁 {name} escolheu: *{choice[1]}*. Obrigado pelo carinho! 🍼")
+                
+
+             
 
 # Se não confirmou presença
 else:
@@ -154,3 +159,4 @@ else:
                 pessoa = PessoaDB(name, 0, choice)
                 pessoa.insert_data()
                 st.success("Sua resposta foi registrada. Obrigado!")
+                
