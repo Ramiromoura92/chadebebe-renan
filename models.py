@@ -28,8 +28,8 @@ class PessoaDB:
    
 class Itens:
     def __init__(self):
-        self.url = "https://afcvlygdllpqbkehqjmf.supabase.co"  # substitua pela sua URL
-        self.key = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFmY3ZseWdkbGxwcWJrZWhxam1mIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1MzU2MTQwMiwiZXhwIjoyMDY5MTM3NDAyfQ.taSe9z5L7cxGsqv1dlgE4SZqZG3BmBuCatjVb9DcRAY"                # substitua pela sua anon key
+        self.url = st.secrets["SUPABASE_URL"]
+        self.key = st.secrets["SUPABASE_KEY"]
         self.supabase = create_client(self.url, self.key)
 
     def adicionar_item(self, descricao):
@@ -66,8 +66,8 @@ class Acompanhante:
         self.nome = nome
         self.pessoa_id = pessoa_id
 
-        self.url = "https://afcvlygdllpqbkehqjmf.supabase.co"  # substitua pela sua URL
-        self.key = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFmY3ZseWdkbGxwcWJrZWhxam1mIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1MzU2MTQwMiwiZXhwIjoyMDY5MTM3NDAyfQ.taSe9z5L7cxGsqv1dlgE4SZqZG3BmBuCatjVb9DcRAY"# substitua pela sua anon key                # sua anon key
+        self.url = st.secrets["SUPABASE_URL"]
+        self.key = st.secrets["SUPABASE_KEY"]                # sua anon key
         self.supabase = create_client(self.url, self.key)
 
     def insert_data(self):
