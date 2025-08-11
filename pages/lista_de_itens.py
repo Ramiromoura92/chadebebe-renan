@@ -80,4 +80,4 @@ df_itens = get_all_itens()
 if not df_itens.empty:
     st.table(df_itens)
 else:
-    st.info("Nenhum dado encontrado no banco ainda.")
+    st.info("Nenhum dado encontrado no banco ainda :/ .")
